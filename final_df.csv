@@ -1,0 +1,101 @@
+"id","theater_name","show","location","prices","dates","current_date","days_elapsed","Latitud","Longitud"
+1,"teatros luchana madrid","doble o nada madrid","Madrid",18,2021-05-07,2024-03-22,1050,NA,NA
+2,"teatre condal barcelona","yo sobrevivi a la egb en barcelona","Barcelona",17,2022-06-17,2024-03-22,644,"41.3749","2.16526"
+3,"teatro encantado madrid","magia de cerca en madrid","Madrid",15,2022-08-27,2024-03-22,573,"40.3985","-3.7039"
+4,"pequeno teatro gran via madrid","corta cable rojo madrid","Madrid",20,2022-08-31,2024-03-22,569,"40.422416","-3.7089372"
+5,"off latina","imposible javier luxor en madrid","Madrid",6.5,2022-09-03,2024-03-22,566,"40.412667","-3.71208"
+6,"teatro arlequin","la mama en madrid","Madrid",12,2022-09-26,2024-03-22,543,"40.42147","-3.70853"
+7,"gran teatro caixabank principe pio madrid","david guapo madrid","Madrid",20,2022-10-08,2024-03-22,531,"40.421075","-3.718859"
+8,"teatro arlequin","la azotea madrid","Madrid",14,2022-10-12,2024-03-22,527,"40.42147","-3.70853"
+9,"teatro capitol madrid","alex clavero en madrid","Madrid",16,2022-10-22,2024-03-22,517,"40.420692","-3.706614"
+10,"teatro figaro madrid","una terapia integral en madrid","Madrid",16,2023-01-01,2024-03-22,446,"40.413488","-3.703703"
+11,"Teatre Goya","la trena en barcelona","Barcelona",15,2023-02-01,2024-03-22,415,NA,NA
+12,"cincomonos espai d art","aqui estoy en barcelona","Barcelona",15,2023-02-25,2024-03-22,391,NA,NA
+13,"teatro la latina madrid","el nombre en madrid","Madrid",16,2023-02-27,2024-03-22,389,"40.4113","-3.70874"
+14,"cinesa fuencarral madrid","los locos de la impro con andreu casanova en madrid","Madrid",16,2023-03-09,2024-03-22,379,NA,NA
+15,"teatro la latina madrid","lotto en madrid","Madrid",16,2023-03-13,2024-03-22,375,"40.4113","-3.70874"
+16,"teatro arlequin","fuego salvaje en madrid","Madrid",12,2023-03-13,2024-03-22,375,"40.42147","-3.70853"
+17,"teatro zorrilla valladolid","la hora y media de el club de la comedia valladolid","Valladolid",22,2023-03-30,2024-03-22,358,"41.6522","-4.72866"
+18,"sala pangoli","el darrer harrington en barcelona","Barcelona",15,2023-04-08,2024-03-22,349,NA,NA
+19,"teatro lara madrid","alicia en el pais de las maravillas en madrid","Madrid",18,2023-04-30,2024-03-22,327,"40.42241","-3.704353"
+20,"teatro arlequin","tiquismiquis en madrid","Madrid",15,2023-05-06,2024-03-22,321,"40.42147","-3.70853"
+21,"teatro infanta isabel madrid","vive moliere en madrid","Madrid",12,2023-05-09,2024-03-22,318,"40.422231","-3.695507"
+22,"cincomonos espai d art","obscena familiar en barcelona","Barcelona",15,2023-05-27,2024-03-22,300,NA,NA
+23,"off latina","escrabel en madrid","Madrid",12.5,2023-05-27,2024-03-22,300,"40.412667","-3.71208"
+24,"la villarroel barcelona","lilla deserta en barcelona","Barcelona",21.6,2023-06-02,2024-03-22,294,NA,NA
+25,"off latina","profluencers madrid","Madrid",12.5,2023-06-04,2024-03-22,292,"40.412667","-3.71208"
+26,"teatro lara madrid","madres en madrid","Madrid",22,2023-06-13,2024-03-22,283,"40.42241","-3.704353"
+27,"teatro infanta isabel madrid","el anticoach con pablo chiapella funcion especial en madrid","Madrid",18,2023-06-24,2024-03-22,272,"40.422231","-3.695507"
+28,"gran teatro caixabank principe pio madrid","trash yllana en madrid","Madrid",22,2023-07-15,2024-03-22,251,"40.421075","-3.718859"
+29,"teatro lara madrid","entrevista en madrid","Madrid",12,2023-07-28,2024-03-22,238,"40.42241","-3.704353"
+30,"teatros luchana madrid","pareja abierta en madrid","Madrid",14.9,2023-07-29,2024-03-22,237,NA,NA
+31,"safe house","aqui y ahora monologo comico terapeutico en barcelona","Barcelona",13.31,2023-07-29,2024-03-22,237,NA,NA
+32,"teatro lara madrid","lo positivo de fracasar en madrid","Madrid",18,2023-08-03,2024-03-22,232,"40.42241","-3.704353"
+33,"off latina","magia a saco en madrid","Madrid",7.5,2023-08-04,2024-03-22,231,"40.412667","-3.71208"
+34,"teatros luchana madrid","fiesta en la granja en madrid","Madrid",11.9,2023-08-19,2024-03-22,216,NA,NA
+35,"teatros luchana madrid","una rana y los dinos en madrid","Madrid",9.9,2023-08-19,2024-03-22,216,NA,NA
+36,"teatros luchana madrid","la magia esta en ti en madrid","Madrid",11.9,2023-08-19,2024-03-22,216,NA,NA
+37,"teatros luchana madrid","una rana en el mar en madrid","Madrid",9.9,2023-08-20,2024-03-22,215,NA,NA
+38,"teatros luchana madrid","tarari y tantan buscando la luna en madrid","Madrid",11.9,2023-08-20,2024-03-22,215,NA,NA
+39,"teatros luchana madrid","princesa 20 en madrid","Madrid",11.9,2023-08-26,2024-03-22,209,NA,NA
+40,"pequeno teatro gran via madrid","Javi rufo madrid","Madrid",12,2023-08-26,2024-03-22,209,"40.422416","-3.7089372"
+41,"off latina","fugaz por javier luxor en madrid","Madrid",6.5,2023-08-27,2024-03-22,208,"40.412667","-3.71208"
+42,"teatros luchana madrid","un secreto a voces en madrid","Madrid",18,2023-08-27,2024-03-22,208,NA,NA
+43,"off latina","hector hurien mitos griegos madrid","Madrid",7.5,2023-08-28,2024-03-22,207,"40.412667","-3.71208"
+44,"teatros luchana madrid","ultrashow madrid","Madrid",14.9,2023-09-01,2024-03-22,203,NA,NA
+45,"teatros luchana madrid","alacasin en madrid","Madrid",11.9,2023-09-02,2024-03-22,202,NA,NA
+46,"teatros luchana madrid","fabulosas travesuras en madrid","Madrid",11.9,2023-09-02,2024-03-22,202,NA,NA
+47,"teatros luchana madrid","la herencia en madrid","Madrid",18,2023-09-02,2024-03-22,202,NA,NA
+48,"teatros luchana madrid","teo y noa al rescate en madrid","Madrid",11.9,2023-09-03,2024-03-22,201,NA,NA
+49,"sala houdini madrid","magia de cercamuy de cerca en madrid","Madrid",12,2023-09-03,2024-03-22,201,NA,NA
+50,"teatros luchana madrid","felipe v el rey que nos salio rana en madrid","Madrid",14.9,2023-09-08,2024-03-22,196,NA,NA
+51,"teatro lara madrid","cadiz madrid","Madrid",16.8,2023-09-08,2024-03-22,196,"40.42241","-3.704353"
+52,"mun coworking","hostia patxi en madrid","Madrid",12,2023-09-09,2024-03-22,195,NA,NA
+53,"teatro arlequin","tributo lina morgan madrid","Madrid",21,2023-09-09,2024-03-22,195,"40.42147","-3.70853"
+54,"teatro alcazar madrid","miguel lago madrid","Madrid",18,2023-09-09,2024-03-22,195,"40.417757","-3.699082"
+55,"teatros luchana madrid","chas y de repente tu en madrid","Madrid",14.9,2023-09-10,2024-03-22,194,NA,NA
+56,"teatro lara madrid","la madre que me pario en madrid","Madrid",18,2023-09-12,2024-03-22,192,"40.42241","-3.704353"
+57,"teatro marquina","forever van gogh madrid","Madrid",18.9,2023-09-12,2024-03-22,192,"40.422652","-3.693642"
+58,"teatro arlequin","la farsa del siglo de oro en madrid","Madrid",15,2023-09-14,2024-03-22,190,"40.42147","-3.70853"
+59,"teatro lara madrid","gente encerrada en sitios en madrid","Madrid",16,2023-09-15,2024-03-22,189,"40.42241","-3.704353"
+60,"teatro alcazar madrid","ilustres ignorantes madrid","Madrid",22,2023-09-15,2024-03-22,189,"40.417757","-3.699082"
+61,"Teatre Goya","ultrashow en barcelona","Barcelona",13,2023-09-15,2024-03-22,189,NA,NA
+62,"mun coworking","muy victimas y muy feministas en madrid","Madrid",12,2023-09-16,2024-03-22,188,NA,NA
+63,"teatro arlequin","el credito en madrid","Madrid",16,2023-09-19,2024-03-22,185,"40.42147","-3.70853"
+64,"pequeno teatro gran via madrid","rober bodegas en madrid","Madrid",18,2023-09-22,2024-03-22,182,"40.422416","-3.7089372"
+65,"teatro maravillas madrid","jamming sessions y jamming sessions golfa en madrid","Madrid",14,2023-09-22,2024-03-22,182,"40.42885","-3.703235"
+66,"la cochera cabaret malaga","improv sololosvalientes en malaga","Málaga",10,2023-09-22,2024-03-22,182,"36.6913","-4.44846"
+67,"teatro pavon","no me toques el cuento en madrid","Madrid",12,2023-09-22,2024-03-22,182,NA,NA
+68,"teatro alcazar madrid","la vida regulinchi daniel fez en madrid","Madrid",16,2023-09-22,2024-03-22,182,"40.417757","-3.699082"
+69,"teatros luchana madrid","ya me has tocado el cuento en madrid","Madrid",16.9,2023-09-22,2024-03-22,182,NA,NA
+70,"Teatre Goya","buenrollistas en barcelona","Barcelona",17,2023-09-22,2024-03-22,182,NA,NA
+71,"teatro municipal del zaidin Isidro Olgoso","improv sololosvalientes en granada","Granada",10.5,2023-09-23,2024-03-22,181,NA,NA
+72,"pequeno teatro gran via madrid","de caperucita a loba en solo seis tios en madrid","Madrid",16,2023-09-23,2024-03-22,181,"40.422416","-3.7089372"
+73,"teatro sanpol","orejas de mariposa en madrid","Madrid",12.5,2023-09-24,2024-03-22,180,NA,NA
+74,"teatro alcazar madrid","el brujo lazarillo de tormes madrid","Madrid",14,2023-09-26,2024-03-22,178,"40.417757","-3.699082"
+75,"teatro lara madrid","desencantadas en madrid","Madrid",10,2023-09-29,2024-03-22,175,"40.42241","-3.704353"
+76,"sala houdini madrid","joe monty magia y humor muy de cerca en madrid","Madrid",12,2023-09-29,2024-03-22,175,NA,NA
+77,"teatro sanpol","el pequeno conejo blanco en madrid","Madrid",12.5,2023-09-30,2024-03-22,174,NA,NA
+78,"wit comedy club madrid","los gilipollas en madrid","Madrid",7,2023-09-30,2024-03-22,174,NA,NA
+79,"teatre apolo barcelona","corta cable rojo barcelona","Barcelona",14,2023-09-30,2024-03-22,174,"41.3749","2.17048"
+80,"teatro lara madrid","el pequeno mozart en madrid","Madrid",18,2023-10-01,2024-03-22,173,"40.42241","-3.704353"
+81,"meltdown madrid","comedy con madrid","Madrid",8,2023-10-04,2024-03-22,170,NA,NA
+82,"teatre condal barcelona","andreu casanova en barcelona","Barcelona",17,2023-10-06,2024-03-22,168,"41.3749","2.16526"
+83,"off latina","mitos nordicos madrid","Madrid",7.5,2023-10-07,2024-03-22,167,"40.412667","-3.71208"
+84,"iIntruso bar madrid","lgtb comedy jam en madrid","Madrid",5,2023-10-09,2024-03-22,165,NA,NA
+85,"teatro marquina","shakespeare en madrid","Madrid",17.5,2023-10-12,2024-03-22,162,"40.422652","-3.693642"
+86,"taberna flamenca el cortijo madrid","espectaculo de flamenco con copa en madrid","Madrid",18,2023-10-12,2024-03-22,162,"40.3955","-3.66178"
+87,"la sala lastcrit comedy club","hostia patxi en barcelona","Barcelona",12,2023-10-14,2024-03-22,160,NA,NA
+88,"teatro bellas artes madrid","la flauta magica en madrid","Madrid",8,2023-10-15,2024-03-22,159,"40.418488","-3.696378"
+89,"SOJO Laboratorio Teatral","bodas de sangre en madrid","Madrid",10.99,2023-10-15,2024-03-22,159,NA,NA
+90,"teatro arlequin","hernani en madrid","Madrid",12,2023-10-17,2024-03-22,157,"40.42147","-3.70853"
+91,"teatro reina victoria madrid","luis piedrahita en madrid","Madrid",19,2023-10-20,2024-03-22,154,"40.4166","-3.69953"
+92,"teatro lara madrid","el gato con botas madrid","Madrid",16,2023-10-21,2024-03-22,153,"40.42241","-3.704353"
+93,"sala torpedo ciudad real","romancero gitano en madrid","Madrid",8,2023-10-21,2024-03-22,153,"39.0328","-4.17565"
+94,"sala houdini madrid","jaque a lo imposible magia de cerca magia y humor en madrid","Madrid",10,2023-10-21,2024-03-22,153,NA,NA
+95,"teatro maravillas madrid","hipnonautas en madrid","Madrid",16,2023-10-22,2024-03-22,152,"40.42885","-3.703235"
+96,"Teatre Goya","srbohigues leminencia en barcelona","Barcelona",17,2023-10-22,2024-03-22,152,NA,NA
+97,"teatro reina victoria madrid","sueno de una noche de verano madrid","Madrid",16,2023-10-23,2024-03-22,151,"40.4166","-3.69953"
+98,"la sala sevilla","tejido conectivo danza en la sala en madrid","Madrid",14,2023-10-23,2024-03-22,151,NA,NA
+99,"teatro arlequin","con ganas de reir madrid","Madrid",12,2023-10-25,2024-03-22,149,"40.42147","-3.70853"
+100,"centro de nuevos creadores sala mirador madrid","katarsis on tour en madrid","Madrid",16,2023-10-27,2024-03-22,147,"40.407","-3.69885"
