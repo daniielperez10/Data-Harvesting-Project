@@ -1,5 +1,5 @@
 ---
-title: "Final Project - Data Harvesting"
+title: "Unveiling the Ticket Price Dynamics: A Deep Dive into Tomaticket's Show Prices"
 author: "Andrea Baños and Daniel Pérez"
 date: "2024-03-10"
 output: html_document
