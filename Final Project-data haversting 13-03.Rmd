@@ -1,0 +1,418 @@
+---
+title: "Final Project - Data Harvesting"
+author: "Andrea Baños and Daniel Pérez"
+date: "2024-03-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load the main libraries
+
+```{r, include=TRUE, warning=FALSE}
+library(rvest)
+library(xml2)
+library(tidyverse)
+library(leaflet)
+library(plotly)
+
+```
+
+## 
+
+```{r, include=TRUE, warning=FALSE}
+url <- "https://www.tomaticket.es/index.php?accion=search&buscador=&IdLugar=0&IdTag=4"
+
+tomaticket <- read_html(url) |> xml_child()
+
+
+```
+
+## Extracting the data
+
+```{r}
+show <-
+  tomaticket %>%
+  xml_find_all("//div[@id='list-search-event' and @class='search-events-normal']//a") %>%
+  xml_attr(attr = "href")
+show
+
+urls_clean <- show[!grepl("^https:", show)]
+show_links <- paste0("https://www.tomaticket.es/", urls_clean)
+show_links
+
+
+theaters <- c()
+
+for (link in show_links) {
+  event_page <- read_html(link)
+  theater <- event_page %>%
+    html_node(xpath = "//div[@id='EventHeadContenido' and @class='white-space']//p[@class='nombre-recinto']//a") %>%
+    html_attr("href")
+  theaters <- c(theaters, theater)
+}
+
+```
+
+```{r}
+coordenadas <- c()
+for (link in show_links) {
+  event_page <- read_html(link)
+  # Obtener el enlace de la localización
+  localizacion <- event_page %>%
+    html_node(xpath = "//a[contains(@class, 'sidebar-links') and contains(@href, 'maps.google.com')]/@href") %>%
+    html_text()
+  coordenadas <- c(coordenadas,localizacion)
+  # Extraer las coordenadas de latitud y longitud de la URL
+  
+}
+df_coordenadas <- data.frame(coordenada = coordenadas)
+df_coordenadas$coordenada <- sub(".*/?q=(.*)$", "\\1", df_coordenadas$coordenada)
+
+df_1 <- as_tibble(df_coordenadas)
+df_1<- separate(df_1, coordenada, into = c("Latitud", "Longitud"), sep = ",")
+df_1$id <- c(1:100)
+```
+
+```{r}
+only_prices <- tomaticket %>%
+  xml_find_all("//p[@class='bottommargin-precio' and @itemprop='offers' and @itemscope='' and @itemtype='https://schema.org/AggregateOffer']//meta[@itemprop='price']")
+only_prices
+
+datetime <- tomaticket %>%
+  xml_find_all("//p[@class='bottommargin-precio' and @itemprop='offers' and @itemscope='' and @itemtype='https://schema.org/AggregateOffer']//time")
+datetime
+
+location <- tomaticket %>%
+  xml_find_all("//p[@class='lugar' and @itemprop='location' and @itemscope='' and @itemtype='https://schema.org/Place']//meta")
+location
+
+```
+
+## Creating the data frames
+
+```{r}
+df_theaters <- data.frame(theater = theaters)
+df_shows <- data.frame(show_links)
+
+clean_dates <- sub("^[^=]+=[^=]+=(.*)$", "\\1", datetime)
+clean_dates <- sub(".*\"(\\d{4}-\\d{2}-\\d{2}).*", "\\1", clean_dates)
+dates <- as.Date(clean_dates)
+
+df_date <- data.frame(dates)
+df_date$id <- c(1:100)
+
+df_theaters$theater_name <- sub(".*/recintos/(.*)$", "\\1", df_theaters$theater)
+df_theaters <- df_theaters %>% 
+  select(-theater)
+
+df_theaters$id <- c(1:100)
+final_df <- left_join(df_theaters, df_date, by = "id")
+
+df_shows$show <- sub(".*/entradas-(.*)", "\\1", df_shows$show_links)
+df_shows <- df_shows %>% 
+  select(-show_links)
+df_shows$id <- c(1:100)
+final_df <- left_join(final_df, df_shows, by = "id")
+
+location_address <- grep('address', location, value = TRUE)
+clean_location <- sub('.*="([^"]*)".*', '\\1', location_address)
+df_location <- data.frame(clean_location)
+df_location$id <- c(1:100)
+final_df <- left_join(final_df, df_location, by = "id")
+
+clean_prices <- sub('.*="([^"]*)".*', '\\1', only_prices)
+df_prices <- data.frame(clean_prices)
+df_prices$id <- c(1:100)
+df_prices$clean_prices <- gsub(",", ".", df_prices$clean_prices)
+
+df_prices$clean_prices <- as.numeric(df_prices$clean_prices)
+df_prices$clean_prices <- round(df_prices$clean_prices, 2)
+final_df <- left_join(final_df, df_prices, by = "id")
+
+
+final_df$show <- gsub("-", " ", final_df$show)
+final_df$theater_name <- gsub("-", " ", final_df$theater_name)
+
+current_date <- as.Date("2024-03-22", format = "%Y-%m-%d")
+current_date <- rep(current_date, times = 100)
+df_current_date <- data.frame(current_date)
+df_current_date$id <- c(1:100)
+
+final_df <- left_join(final_df, df_current_date, by = "id")
+final_df <- final_df %>% 
+  select(id, everything())
+
+final_df <- final_df %>% 
+  rename(location = clean_location, prices = clean_prices)
+
+final_df <- final_df %>% 
+  relocate(dates, .after = prices)
+
+final_df <- final_df %>% 
+  mutate(days_elapsed = difftime(current_date, dates))
+
+final_df <- left_join(final_df, df_1, by  = "id")
+
+
+final_df$days_elapsed <- as.numeric(final_df$days_elapsed, units = "days")
+
+
+
+#write.csv(final_df, "final_df.csv", row.names = FALSE) #guardo los valores imputados para que sean siempre los mismos. Lo hago para el primer método porque es el que finalmente selecciono (más adelante la explicación)
+
+final_df <- read_csv("final_df.csv")
+#elimino la observación 93 porque no se corresponde el teatro con la obra (en tomaticket)
+final_df <- final_df %>%
+  slice(-93, -98)
+
+final_df
+
+```
+
+## Descriptive Analysis
+
+1.  **National Level**
+
+```{r, include=TRUE, warning=FALSE}
+ggplot(data = final_df, aes(x = reorder(location, location, length))) +
+  geom_bar(aes(fill = location)) +
+  geom_text(stat='count', aes(label=..count..), vjust=-0.5) +
+  labs(title = "Number of shows per city",
+       x = "City",
+       y = "Number of shows") +
+  theme_minimal()
+```
+
+At Tomaticket, there are 98 theater productions available, of which 82 are in theaters in Madrid, 13 in Barcelona, and one in Granada, Málaga, and Valladolid.
+
+```{r}
+ggplot(final_df, aes(x = days_elapsed)) +
+  geom_density(fill = "skyblue", color = "navyblue") +
+  labs(title = "Distribution of duration (available days)", x = "Days", y = "Density") +
+  theme_minimal()
+
+#Mean and mode
+media <- mean(final_df$days_elapsed)
+moda <- names(sort(-table(final_df$days_elapsed)))[1]
+media
+moda
+```
+
+We can observe that a large part of the theater productions are available in theaters for less than 250 days. On average, the shows advertised on Tomaticket are available in mean in each theater for about 256 days; however, the usual or typical availability is around 182 days (6 months).
+
+```{r}
+avg_price_per_city <- final_df %>%
+  group_by(location) %>%
+  summarise(avg_price = mean(prices, na.rm = TRUE))
+
+ggplot(avg_price_per_city, aes(x = reorder(location, avg_price), y = avg_price, fill = avg_price)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = sprintf("€%.2f", avg_price)), vjust = -0.5, color = "black", size = 3) +  # Añadir etiquetas de texto con los precios
+  labs(title = "Average Price by Location",
+       x = "Location",
+       y = "Average price") +
+  scale_fill_gradient(low = "lightgreen", high = "orange") +  # Escala de color de menos a más precio
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+```
+
+Valladolid has the highest average price (€22) for the theater productions available on Tomaticket, followed by Barcelona (€15.53) and Madrid (€14.15). On the other hand, the cities with the cheapest theater productions are Granada and Málaga, with prices below €10.50.
+
+However, for Valladolid, Granada, and Málaga, we only have one theater production available. This means that the average price for those cities will be equal to the price of that single observation.
+
+In practical terms, this may result in a biased representation of the average price for those cities, as the price of a single observation may not be representative of the price distribution in that particular city. Therefore, it is important to consider this bias when interpreting the results of the analysis.
+
+Therefore, we will focus our analysis on the theater productions advertised on Tomaticket only for Madrid, and we will compare between theaters.
+
+2.  **Analyzing Madrid´s theaters**
+
+```{r}
+data_madrid <- final_df %>% 
+  filter(location == "Madrid")
+```
+
+```{r}
+# Calcular el precio medio para cada teatro
+precio_medio_por_teatro <- data_madrid %>%
+  group_by(theater_name) %>%
+  summarize(precio_medio = mean(prices))
+
+
+
+# Crear el gráfico de barras
+ggplot(precio_medio_por_teatro, aes(x = reorder(theater_name, precio_medio), y = precio_medio)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Average Price per Theater",
+       x = "Theater",
+       y = "Average Price") +
+  theme(axis.text.x = element_text(angle = 40, size = 6, hjust = 1))
+
+```
+
+Let´s see the most expensive and the cheapest theaters in Madrid
+
+```{r}
+data_madrid_tp <- data_madrid %>%
+  group_by(theater_name) %>%
+  summarise(avg_price = round(mean(prices, na.rm = TRUE), 2)) # 27 teatros diferentes
+```
+
+Most expensive theaters:
+
+```{r}
+data_madrid_tp %>% slice_max(avg_price, n = 6)
+```
+
+Cheapest theaters:
+
+```{r}
+data_madrid_tp %>% slice_min(avg_price, n = 6)
+```
+
+```{r}
+obras_por_teatro <- data_madrid %>%
+  group_by(theater_name) %>%
+  summarize(num_obras = n())
+
+# Crear el gráfico de barras con ejes invertidos, escala de color y etiquetas en las barras
+ggplot(obras_por_teatro, aes(x = reorder(theater_name, num_obras), y = num_obras, fill = num_obras)) +
+  geom_bar(stat = "identity") +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +  # Definir la escala de color
+  labs(title = "Número de Obras por Teatro",
+       x = "Teatro",
+       y = "Número de Obras") +
+  coord_flip() +
+  geom_text(aes(label = num_obras), hjust = -0.2, size = 3)  # Agregar etiquetas a las barras
+```
+
+"Teatro Luchana" is the theater that hosts the most shows in Madrid (17), followed by "Teatro Lara" (10), "Teatro Arlequín" (9), and "Teatro Off Latina" (7).
+
+```{r}
+largest_shows_madrid <- data_madrid %>%
+  top_n(5, days_elapsed)
+largest_shows_madrid
+
+
+ggplot(data = largest_shows_madrid,
+                  aes(x = reorder(show, -days_elapsed),
+                      y = days_elapsed)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(x = "Show", y = "Duración (días desde su fecha hasta ahora)", title = "Duración de los 5 shows más largos") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+The show 'Doble o Nada' stands out significantly above the rest, with a run time of over 1000 days. The other shows closely following it have an approximate duration of 500 days each.
+
+```{r}
+
+
+plot_ly(data = data_madrid, x = ~days_elapsed, y = ~prices, text = ~paste("Nombre del show: ", show, "<br>Duración: ", current_date - dates, " días<br>Precio: $", prices), hoverinfo = "text",
+        type = 'scatter', mode = 'markers', marker = list(color = ~prices, colorscale = 'RdYlGn',
+                                                         colorbar = list(title = "Precio", ticksuffix = "$"))) %>%
+  layout(title = "Relación entre Días Activos del Show y Precio Medio",
+         xaxis = list(title = "Días Activos del Show"),
+         yaxis = list(title = "Precio Medio"))
+```
+
+In shows priced at €10 or higher, there is a certain positive relationship observed between the number of days the show is active and its price. Although it is not a very strong relationship.
+
+```{r}
+teatros_con_mas_shows <- data_madrid %>%
+  group_by(theater_name) %>%
+  summarize(num_obras = n(),
+            prices = mean(prices),
+            days_elapsed = mean(days_elapsed)) %>%
+  arrange(desc(num_obras))
+```
+
+```{r}
+data_clustering <- teatros_con_mas_shows  %>%
+  select(theater_name, prices, num_obras, days_elapsed)
+
+# Normalizar los datos
+data_clustering_norm <- data_clustering %>%
+  select(-theater_name) %>%
+  scale()
+
+# Realizar el clustering con k-means
+set.seed(123)
+kmeans_model <- kmeans(data_clustering_norm, centers = 3)
+teatros_con_mas_shows$cluster <- as.factor(kmeans_model$cluster)
+
+
+
+```
+
+```{r}
+
+
+
+grafico <- ggplot(teatros_con_mas_shows, aes(x = prices, y = days_elapsed, color = cluster, 
+                                             text = paste("Teatro:", theater_name, "<br>Precio Medio:", prices, "<br>Days Elapsed:", days_elapsed))) +
+  geom_point() +
+  stat_ellipse(type = "norm", level = 0.95, linetype = "dashed") +
+  labs(title = "Clustering de Teatros",
+       x = "Precio Medio",
+       y = "Days elapsed") +
+  scale_color_manual(values = c("blue", "green", "purple"))
+
+
+grafico_interactivo <- ggplotly(grafico, tooltip = "text") %>%
+  plotly::layout(hovermode = "closest")
+
+
+grafico_interactivo
+
+```
+
+We see that we could group the 27 theaters offering shows on Tomaticket into three different groups, taking into account their price and the number of days they are on the billboard.
+
+Group 1, formed by those theaters whose offered shows have a relatively high average price and are also available on the billboard for more than 350 days.
+
+Group 2, formed by theaters with the lowest prices and whose shows, on average, are available on the billboard for less than 300 days.
+
+And finally, Group 3, which consists of theaters where the availability of shows is less than 300 days, but their prices are relatively high.
+
+```{r, include=TRUE, warning=FALSE}
+
+
+data_madrid <- data_madrid %>%
+  mutate(Longitud = as.numeric(Longitud),
+         Latitud = as.numeric(Latitud)) %>%
+  na.omit()
+
+# Crear el mapa inicial
+map <- leaflet(data_madrid) %>% 
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = median(data_madrid$Longitud), lat = median(data_madrid$Latitud), zoom = 9)
+
+color_pal <- colorFactor(
+  palette = c( "green", "red"), # Colores disponibles
+  domain = data_madrid$prices  # Valores para asignar colores
+)
+# Añadir los círculos con los datos de latitud y longitud
+map <- map %>% 
+  addCircles(lng = ~Longitud, 
+             lat = ~Latitud,
+             color = ~color_pal(prices),
+              popup = ~paste("Teatro:",theater_name, "<br>Precio:" ,prices))
+
+# Añadir leyenda
+map <- map %>% 
+  addLegend(position = "bottomleft", pal = color_pal, values = ~prices, bins = 4) 
+  
+
+
+
+map
+
+```
+
+Regarding the location of theaters in Madrid whose shows are offered on Tomaticket, the most notable aspect is that, at least for those that Tomaticket provides location information for, all the theaters are located in the city center.
+
+If we consider the relationship between location and price, we do not observe any notable pattern.
