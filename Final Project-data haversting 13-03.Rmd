@@ -20,7 +20,7 @@ library(plotly)
 
 ```
 
-## 
+## Extracting the data
 
 ```{r, include=TRUE, warning=FALSE}
 url <- "https://www.tomaticket.es/index.php?accion=search&buscador=&IdLugar=0&IdTag=4"
@@ -30,7 +30,7 @@ tomaticket <- read_html(url) |> xml_child()
 
 ```
 
-## Extracting the data
+## Navigating through the extracted data - Generating the variables
 
 ```{r}
 show <-
@@ -60,12 +60,10 @@ for (link in show_links) {
 coordenadas <- c()
 for (link in show_links) {
   event_page <- read_html(link)
-  # Obtener el enlace de la localización
   localizacion <- event_page %>%
     html_node(xpath = "//a[contains(@class, 'sidebar-links') and contains(@href, 'maps.google.com')]/@href") %>%
     html_text()
   coordenadas <- c(coordenadas,localizacion)
-  # Extraer las coordenadas de latitud y longitud de la URL
   
 }
 df_coordenadas <- data.frame(coordenada = coordenadas)
@@ -91,7 +89,7 @@ location
 
 ```
 
-## Creating the data frames
+## Data Cleaning and Final Data Frame Creation
 
 ```{r}
 df_theaters <- data.frame(theater = theaters)
@@ -161,7 +159,7 @@ final_df$days_elapsed <- as.numeric(final_df$days_elapsed, units = "days")
 
 
 
-#write.csv(final_df, "final_df.csv", row.names = FALSE) #guardo los valores imputados para que sean siempre los mismos. Lo hago para el primer método porque es el que finalmente selecciono (más adelante la explicación)
+#write.csv(final_df, "final_df.csv", row.names = FALSE)
 
 final_df <- read_csv("final_df.csv")
 #elimino la observación 93 porque no se corresponde el teatro con la obra (en tomaticket)
@@ -210,7 +208,7 @@ avg_price_per_city <- final_df %>%
 
 ggplot(avg_price_per_city, aes(x = reorder(location, avg_price), y = avg_price, fill = avg_price)) +
   geom_bar(stat = "identity") +
-  geom_text(aes(label = sprintf("€%.2f", avg_price)), vjust = -0.5, color = "black", size = 3) +  # Añadir etiquetas de texto con los precios
+  geom_text(aes(label = sprintf("€%.2f", avg_price)), vjust = -0.5, color = "black", size = 3) + 
   labs(title = "Average Price by Location",
        x = "Location",
        y = "Average price") +
@@ -237,14 +235,13 @@ data_madrid <- final_df %>%
 ```
 
 ```{r}
-# Calcular el precio medio para cada teatro
+# Mean price per theater
 precio_medio_por_teatro <- data_madrid %>%
   group_by(theater_name) %>%
   summarize(precio_medio = mean(prices))
 
 
 
-# Crear el gráfico de barras
 ggplot(precio_medio_por_teatro, aes(x = reorder(theater_name, precio_medio), y = precio_medio)) +
   geom_bar(stat = "identity", fill = "skyblue") +
   labs(title = "Average Price per Theater",
@@ -259,7 +256,7 @@ Let´s see the most expensive and the cheapest theaters in Madrid
 ```{r}
 data_madrid_tp <- data_madrid %>%
   group_by(theater_name) %>%
-  summarise(avg_price = round(mean(prices, na.rm = TRUE), 2)) # 27 teatros diferentes
+  summarise(avg_price = round(mean(prices, na.rm = TRUE), 2)) # 27 different theaters
 ```
 
 Most expensive theaters:
@@ -279,15 +276,15 @@ obras_por_teatro <- data_madrid %>%
   group_by(theater_name) %>%
   summarize(num_obras = n())
 
-# Crear el gráfico de barras con ejes invertidos, escala de color y etiquetas en las barras
+
 ggplot(obras_por_teatro, aes(x = reorder(theater_name, num_obras), y = num_obras, fill = num_obras)) +
   geom_bar(stat = "identity") +
-  scale_fill_gradient(low = "lightblue", high = "darkblue") +  # Definir la escala de color
+  scale_fill_gradient(low = "lightblue", high = "darkblue") + 
   labs(title = "Número de Obras por Teatro",
        x = "Teatro",
        y = "Número de Obras") +
   coord_flip() +
-  geom_text(aes(label = num_obras), hjust = -0.2, size = 3)  # Agregar etiquetas a las barras
+  geom_text(aes(label = num_obras), hjust = -0.2, size = 3)
 ```
 
 "Teatro Luchana" is the theater that hosts the most shows in Madrid (17), followed by "Teatro Lara" (10), "Teatro Arlequín" (9), and "Teatro Off Latina" (7).
@@ -334,12 +331,12 @@ teatros_con_mas_shows <- data_madrid %>%
 data_clustering <- teatros_con_mas_shows  %>%
   select(theater_name, prices, num_obras, days_elapsed)
 
-# Normalizar los datos
+# Normalization
 data_clustering_norm <- data_clustering %>%
   select(-theater_name) %>%
   scale()
 
-# Realizar el clustering con k-means
+# Clustering with k-means
 set.seed(123)
 kmeans_model <- kmeans(data_clustering_norm, centers = 3)
 teatros_con_mas_shows$cluster <- as.factor(kmeans_model$cluster)
@@ -386,7 +383,7 @@ data_madrid <- data_madrid %>%
          Latitud = as.numeric(Latitud)) %>%
   na.omit()
 
-# Crear el mapa inicial
+# Initial map
 map <- leaflet(data_madrid) %>% 
   addProviderTiles(providers$CartoDB.Positron) %>%
   setView(lng = median(data_madrid$Longitud), lat = median(data_madrid$Latitud), zoom = 9)
@@ -395,14 +392,13 @@ color_pal <- colorFactor(
   palette = c( "green", "red"), # Colores disponibles
   domain = data_madrid$prices  # Valores para asignar colores
 )
-# Añadir los círculos con los datos de latitud y longitud
+# Latitud and longitud
 map <- map %>% 
   addCircles(lng = ~Longitud, 
              lat = ~Latitud,
              color = ~color_pal(prices),
               popup = ~paste("Teatro:",theater_name, "<br>Precio:" ,prices))
 
-# Añadir leyenda
 map <- map %>% 
   addLegend(position = "bottomleft", pal = color_pal, values = ~prices, bins = 4) 
   
