@@ -90,5 +90,3 @@ Regarding the location of theaters in Madrid whose shows are offered on Tomatick
 As for the relationship between location and price, no clear or consistent pattern is observed. This means that the price of shows does not appear to be directly related to the geographical location of the theater in Madrid.
 
 
-writeLines(README, "README.md")
-
