@@ -88,5 +88,9 @@ Group 3 theaters, with shows available for less than 300 days but relatively hig
 Regarding the location of theaters in Madrid whose shows are offered on Tomaticket, it is notable that all theaters, at least those for which Tomaticket provides location information, are located in the city center. This suggests a concentration of theatrical activities in the heart of Madrid, which could facilitate access and participation by the public.
 
 As for the relationship between location and price, no clear or consistent pattern is observed. This means that the price of shows does not appear to be directly related to the geographical location of the theater in Madrid.
+## Instructions
+Download the file in HTML or Rmd format.
+If you are using the Rmd file, make sure to download the 'final_df.csv' database attached in the repository to use exactly the same data with which we conducted the descriptive analysis 
+Run the code
 
 
