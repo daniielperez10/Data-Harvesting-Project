@@ -30,7 +30,7 @@ tomaticket <- read_html(url) |> xml_child()
 
 ```
 
-## Extracting the data
+## Navigating through the extracted data - Generating the variables
 
 ```{r}
 show <-
@@ -91,7 +91,7 @@ location
 
 ```
 
-## Creating the data frames
+## Data Cleaning and Final Data Frame Creation
 
 ```{r}
 df_theaters <- data.frame(theater = theaters)
@@ -259,7 +259,7 @@ Let´s see the most expensive and the cheapest theaters in Madrid
 ```{r}
 data_madrid_tp <- data_madrid %>%
   group_by(theater_name) %>%
-  summarise(avg_price = round(mean(prices, na.rm = TRUE), 2)) # 27 teatros diferentes
+  summarise(avg_price = round(mean(prices, na.rm = TRUE), 2)) # 27 theaters
 ```
 
 Most expensive theaters:
@@ -334,12 +334,12 @@ teatros_con_mas_shows <- data_madrid %>%
 data_clustering <- teatros_con_mas_shows  %>%
   select(theater_name, prices, num_obras, days_elapsed)
 
-
+#normalization
 data_clustering_norm <- data_clustering %>%
   select(-theater_name) %>%
   scale()
 
-
+#K.means clustering
 set.seed(123)
 kmeans_model <- kmeans(data_clustering_norm, centers = 3)
 teatros_con_mas_shows$cluster <- as.factor(kmeans_model$cluster)
