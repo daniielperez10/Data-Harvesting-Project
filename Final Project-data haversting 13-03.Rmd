@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Load the main libraries
+## Loading the main libraries
 
 ```{r, include=TRUE, warning=FALSE}
 library(rvest)
