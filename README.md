@@ -91,7 +91,7 @@ As for the relationship between location and price, no clear or consistent patte
 ## Instructions
 -Download the file in HTML or Rmd format.
 
--If you are using the Rmd file, make sure to download the [https://github.com/daniielperez10/Data-Harvesting-Project/blob/main/final_df.csv](data/df_final.csv) database attached in the repository to use exactly the same data with which we conducted the descriptive analysis 
+-If you are using the Rmd file, make sure to download the [https://github.com/daniielperez10/Data-Harvesting-Project/blob/main/final_df.csv](df_final.csv) database attached in the repository to use exactly the same data with which we conducted the descriptive analysis 
 
 -Run the code
 
